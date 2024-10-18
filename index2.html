@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gerar Excel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<h1>Gerar Excel</h1>
+<div id="formsContainer">
+  <form id="dataForm">
+    <table id="dataTable">
+      <thead>
+      <tr>
+        <th>Codigo</th>
+        <td><input type="text" name="codigo" /></td>
+      </tr>
+      <tr>
+        <th>Nome</th>
+        <td><input type="text" name="nome" /></td>
+      </tr>
+      <tr>
+        <th>Arroz P1</th>
+        <td><input type="text" name="arrozP1" />
+          <th>Valor</th>
+          <td><input type="text" name="varrozP1" />
+        </td>
+      </tr>
+      <tr>
+        <th>Arroz P2</th>
+        <td><input type="text" name="arrozP2" />
+          <th>Valor</th>
+          <td><input type="text" name="varrozP2" />
+        </td>
+      </tr>
+      <tr>
+        <th>Arroz 2KG</th>
+        <td><input type="text" name="arroz2kg" />
+          <th>Valor</th>
+          <td><input type="text" name="varroz2kg" />
+        </td>
+      </tr>
+      <tr>
+        <th>Reserva Esp.</th>
+        <td><input type="text" name="arrozre" />
+          <th>Valor</th>
+          <td><input type="text" name="varrozre" />
+        </td>
+      </tr>
+      <tr>
+        <th>Komabem</th>
+        <td><input type="text" name="arrozk" />
+          <th>Valor</th>
+          <td><input type="text" name="varrozk" />
+        </td>
+      </tr>
+      <tr>
+        <th>Komabem 2KG</th>
+        <td><input type="text" name="arrozk2kg" />
+          <th>Valor</th>
+          <td><input type="text" name="varrozk2kg" />
+        </td>
+      </tr>
+      <tr>
+        <th>Prazo</th>
+        <td>
+          <select name="prazo">
+            <option value="avista">Avista</option>
+            <option value="7">7 Dias</option>
+            <option value="14">14 Dias</option>
+            <option value="21">21 Dias</option>
+            <option value="28">28 Dias</option>
+            <option value="35">35 Dias</option>
+            <option value="42">42 Dias</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>Remover</th>
+        <td><button type="button" onclick="removeRow(this)">Remover</button></td>
+      </tr>
+      </thead>
+    </table>
+    <br>
+    <button type="button" onclick="addRow()">Adicionar Linha</button>
+    <button type="button" onclick="generateExcel()">Gerar Excel</button>
+  </form>
+</div>
+
+
+<script>
+  function addRow() {
+    var form = document.getElementById("dataForm").cloneNode(true);
+    form.querySelectorAll('input').forEach(input => input.value = ''); // Limpar os campos de entrada
+    form.querySelectorAll('select').forEach(select => select.selectedIndex = 0); // Resetar os campos de seleção
+    document.getElementById("formsContainer").appendChild(form);
+  }
+
+  function removeRow(button) {
+    var form = button.closest('form');
+    form.parentNode.removeChild(form);
+  }
+
+  function generateExcel() {
+    var data = [];
+    var forms = document.querySelectorAll('#formsContainer form');
+    forms.forEach((form) => {
+      var rowData = [];
+      form.querySelectorAll('input, select').forEach((cell) => {
+        rowData.push(cell.value);
+      });
+      data.push(rowData);
+    });
+    var ws_data = [["Codigo", "Nome", "Arroz P1", "Valor Arroz P1", "Arroz P2", "Valor Arroz P2", "Arroz 2KG", "Valor Arroz 2KG", "Reserva Esp.", "Valor Reserva Esp.", "Komabem", "Valor Komabem", "Komabem 2KG", "Valor Komabem 2KG", "Prazo"]].concat(data);    
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    // Define estilos de borda
+    var borderAll = {
+      top: { style: "thin" },
+      bottom: { style: "thin" },
+      left: { style: "thin" },
+      right: { style: "thin" }
+    };
+    // Aplica as bordas a todas as células
+    for (let R = 0; R < ws_data.length; R++) {
+      for (let C = 0; C < ws_data[R].length; C++) {
+        let cell_address = XLSX.utils.encode_cell({r: R, c: C});
+        if (!ws[cell_address]) ws[cell_address] = { t: 's', v: ws_data[R][C] };
+        ws[cell_address].s = {
+          border: borderAll
+        };
+      }
+    }
+    XLSX.utils.book_append_sheet(wb, ws, "Dados");
+    XLSX.writeFile(wb, "dados.xlsx");
+  }
+</script>
+</body>
+</html>
