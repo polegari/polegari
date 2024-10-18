@@ -20,4 +20,4 @@ Instruções para a adição deste repo:
 
 ## Enjoy!
 
-<a href="index.html">index.html</a>
+<a href="iindex.html">Realizar Pedidos</a>
