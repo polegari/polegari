@@ -1,145 +1,190 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gerar Excel</title>
+  <title>PEDIDOS</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
-    table, th, td {
-      border: 1px solid black;
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url(https://ibassets.com.br/ib.item.image.large/l-e27f45ad66de44aeb26999e861cc6f34.jpeg);
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #formsContainer {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      margin-bottom: 20px;
       border-collapse: collapse;
     }
     th, td {
-      padding: 8px;
+      padding: 12px;
+      border: 1px solid #ddd;
       text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;       
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin: 4px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .btn-remove {
+      background-color: #f44336;
+    }
+    .btn-remove:hover {
+      background-color: #e53935;
     }
   </style>
 </head>
 <body>
-<h1>Gerar Excel</h1>
+<h1>PEDIDOS</h1>
 <div id="formsContainer">
   <form id="dataForm">
     <table id="dataTable">
       <thead>
       <tr>
-        <th>Codigo</th>
+        <th>CÓDIGO:</th>
         <td><input type="text" name="codigo" /></td>
       </tr>
       <tr>
-        <th>Nome</th>
+        <th>NOME:</th>
         <td><input type="text" name="nome" /></td>
       </tr>
       <tr>
-        <th>Arroz P1</th>
-        <td><input type="text" name="arrozP1" />
-          <th>Valor</th>
-          <td><input type="text" name="varrozP1" />
-        </td>
+        <th>Arroz P1:</th>
+        <td><input type="text" name="arrozP1" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varrozP1" /></td>
       </tr>
       <tr>
-        <th>Arroz P2</th>
-        <td><input type="text" name="arrozP2" />
-          <th>Valor</th>
-          <td><input type="text" name="varrozP2" />
-        </td>
+        <th>Arroz P2:</th>
+        <td><input type="text" name="arrozP2" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varrozP2" /></td>
       </tr>
       <tr>
-        <th>Arroz 2KG</th>
-        <td><input type="text" name="arroz2kg" />
-          <th>Valor</th>
-          <td><input type="text" name="varroz2kg" />
-        </td>
+        <th>Arroz 2KG:</th>
+        <td><input type="text" name="arroz2kg" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varroz2kg" /></td>
       </tr>
       <tr>
-        <th>Reserva Esp.</th>
-        <td><input type="text" name="arrozre" />
-          <th>Valor</th>
-          <td><input type="text" name="varrozre" />
-        </td>
+        <th>Reserva Esp:</th>
+        <td><input type="text" name="arrozre" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varrozre" /></td>
       </tr>
       <tr>
-        <th>Komabem</th>
-        <td><input type="text" name="arrozk" />
-          <th>Valor</th>
-          <td><input type="text" name="varrozk" />
-        </td>
+        <th>Komabem:</th>
+        <td><input type="text" name="arrozk" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varrozk" /></td>
       </tr>
       <tr>
-        <th>Komabem 2KG</th>
-        <td><input type="text" name="arrozk2kg" />
-          <th>Valor</th>
-          <td><input type="text" name="varrozk2kg" />
-        </td>
+        <th>Komabem 2KG:</th>
+        <td><input type="text" name="arrozk2kg" /></td>
+        <th>Valor:</th>
+        <td><input type="text" name="varrozk2kg" /></td>
       </tr>
       <tr>
-        <th>Prazo</th>
+        <th>Prazo:</th>
         <td>
           <select name="prazo">
-            <option value="avista">Avista</option>
-            <option value="7">7 Dias</option>
-            <option value="14">14 Dias</option>
-            <option value="21">21 Dias</option>
-            <option value="28">28 Dias</option>
-            <option value="35">35 Dias</option>
-            <option value="42">42 Dias</option>
+            <option value="Avista">À Vista</option>
+            <option value="7 Dias">7 Dias</option>
+            <option value="14 Dias">14 Dias</option>
+            <option value="21 Dias">21 Dias</option>
+            <option value="28 Dias">28 Dias</option>
+            <option value="35 Dias">35 Dias</option>
+            <option value="42 Dias">42 Dias</option>
           </select>
         </td>
       </tr>
       <tr>
-        <th>Remover</th>
-        <td><button type="button" onclick="removeRow(this)">Remover</button></td>
+        <th>Remover cliente:</th>
+        <td><button type="button" class="btn-remove" onclick="removeRow(this)">SIM</button></td>
       </tr>
       </thead>
     </table>
     <br>
-    <button type="button" onclick="addRow()">Adicionar Linha</button>
+    <button type="button" onclick="addRow()">Adicionar Cliente</button>
     <button type="button" onclick="generateExcel()">Gerar Excel</button>
   </form>
 </div>
 
-
 <script>
   function addRow() {
-    var form = document.getElementById("dataForm").cloneNode(true);
-    form.querySelectorAll('input').forEach(input => input.value = ''); // Limpar os campos de entrada
-    form.querySelectorAll('select').forEach(select => select.selectedIndex = 0); // Resetar os campos de seleção
+    const form = document.getElementById("dataForm").cloneNode(true);
+    form.querySelectorAll('input').forEach(input => input.value = '');
+    form.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
     document.getElementById("formsContainer").appendChild(form);
   }
 
   function removeRow(button) {
-    var form = button.closest('form');
+    const form = button.closest('form');
     form.parentNode.removeChild(form);
   }
 
   function generateExcel() {
-    var data = [];
-    var forms = document.querySelectorAll('#formsContainer form');
-    forms.forEach((form) => {
-      var rowData = [];
+    const data = [
+      ["Codigo", "Nome", "Arroz P1", "Valor Arroz P1", "Arroz P2", "Valor Arroz P2", "Arroz 2KG", "Valor Arroz 2KG", "Reserva Esp.", "Valor Reserva Esp.", "Komabem", "Valor Komabem", "Komabem 2KG", "Valor Komabem 2KG", "Prazo"]
+    ];
+    document.querySelectorAll('#formsContainer form').forEach((form) => {
+      const rowData = [];
       form.querySelectorAll('input, select').forEach((cell) => {
         rowData.push(cell.value);
       });
       data.push(rowData);
     });
-    var ws_data = [["Codigo", "Nome", "Arroz P1", "Valor Arroz P1", "Arroz P2", "Valor Arroz P2", "Arroz 2KG", "Valor Arroz 2KG", "Reserva Esp.", "Valor Reserva Esp.", "Komabem", "Valor Komabem", "Komabem 2KG", "Valor Komabem 2KG", "Prazo"]].concat(data);    
-    var wb = XLSX.utils.book_new();
-    var ws = XLSX.utils.aoa_to_sheet(ws_data);
-    // Define estilos de borda
-    var borderAll = {
-      top: { style: "thin" },
-      bottom: { style: "thin" },
-      left: { style: "thin" },
-      right: { style: "thin" }
-    };
-    // Aplica as bordas a todas as células
-    for (let R = 0; R < ws_data.length; R++) {
-      for (let C = 0; C < ws_data[R].length; C++) {
-        let cell_address = XLSX.utils.encode_cell({r: R, c: C});
-        if (!ws[cell_address]) ws[cell_address] = { t: 's', v: ws_data[R][C] };
-        ws[cell_address].s = {
-          border: borderAll
-        };
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    
+    const cols = [3, 5, 7, 9, 11, 13];
+    cols.forEach((col) => {
+      for (let R = 1; R < data.length; R++) {
+        const cell_address = XLSX.utils.encode_cell({ r: R, c: col });
+        if (!ws[cell_address]) ws[cell_address] = { t: 'n', v: parseFloat(data[R][col]) || 0 };
+        ws[cell_address].t = 'n';
+        ws[cell_address].z = 'R$ #,##0.00';
+      }
+    });
+
+    const borderAll = { top: { style: "thin" }, bottom: { style: "thin" }, left: { style: "thin" }, right: { style: "thin" } };
+    for (let R = 0; R < data.length; R++) {
+      for (let C = 0; C < data[R].length; C++) {
+        const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!ws[cell_address]) ws[cell_address] = { t: 's', v: data[R][C] };
+        ws[cell_address].s = { border: borderAll };
       }
     }
+
     XLSX.utils.book_append_sheet(wb, ws, "Dados");
     XLSX.writeFile(wb, "dados.xlsx");
   }
