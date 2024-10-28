@@ -19,6 +19,3 @@ Instruções para a adição deste repo:
 </p>
 
 ## Enjoy!
-
-<a href="iindex.html">Realizar Pedidos</a>
-<a href="c.html">Realizar Pedidos 2</a>
