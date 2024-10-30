@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Arquivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #conteudo {
+            width: 80%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #editar {
+            display: none;
+        }
+
+        #adicionar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Upload de Arquivo</h1>
+    <form id="form-upload">
+        <input type="file" id="arquivo" accept=".json">
+        <button id="botao-upload">Upload</button>
+    </form>
+    <div id="conteudo"></div>
+    <button id="editar" onclick="editarDados()">Editar</button>
+    <button id="adicionar" onclick="adicionarDados()">Adicionar</button>
+    <div id="editar-conteudo" style="display:none;"></div>
+    <button id="salvar" type="button" onclick="salvarDados()" style="display:none;">Salvar</button>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+    <script>
+        const form = document.getElementById('form-upload');
+        const arquivoInput = document.getElementById('arquivo');
+        const conteudoDiv = document.getElementById('conteudo');
+        const editarButton = document.getElementById('editar');
+        const adicionarButton = document.getElementById('adicionar');
+        const salvarButton = document.getElementById('salvar');
+        const editarConteudoDiv = document.getElementById('editar-conteudo');
+        let dados;
+        let arquivo;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            arquivo = arquivoInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                dados = JSON.parse(reader.result);
+                const conteudo = dados.map((item) => `${item.codigo} - ${item.nome}`).join('\n');
+                conteudoDiv.innerText = conteudo;
+                editarButton.style.display = 'block';
+            };
+
+            reader.readAsText(arquivo);
+        });
+
+        function editarDados() {
+            editarConteudoDiv.innerHTML = '';
+            dados.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label>Código:</label>
+                    <input type="text" value="${item.codigo}" data-index="${index}">
+                    <label>Nome:</label>
+                    <input type="text" value="${item.nome}" data-index="${index}">
+                    <button data-index="${index}" class="remover">Remover</button>
+                `;
+                editarConteudoDiv.appendChild(div);
+            });
+            adicionarButton.style.display = 'block';
+            conteudoDiv.style.display = 'none';
+            editarConteudoDiv.style.display = 'block';
+            salvarButton.style.display = 'block';
+
+            const removerButtons = editarConteudoDiv.querySelectorAll('.remover');
+            removerButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const index = button.dataset.index;
+                    removerItem(index);
+                });
+            });
+        }
+
+        function removerItem(index) {
+            dados.splice(index, 1);
+            editarDados();
+        }
+
+        function adicionarDados() {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label>Código:</label>
+                <input type="text">
+                <label>Nome:</label>
+                <input type="text">
+                <button class="remover">Remover</button>
+            `;
+            editarConteudoDiv.appendChild(div);
+            const removerButton = div.querySelector('.remover');
+            removerButton.addEventListener('click', () => {
+                editarConteudoDiv.removeChild(div);
+            });
+        }
+
+        function salvarDados() {
+            dados = Array.from(editarConteudoDiv.children).filter((child) => child.tagName === 'DIV').map((div) => {
+                const inputs = div.querySelectorAll('input');
+                return {
+                    codigo: inputs[0].value,
+                    nome: inputs[1].value
+                };
+            });
+            const conteudo = dados.map((item) => `${item.codigo} - ${item.nome}`).join('\n');
+            conteudoDiv.innerText = conteudo;
+            conteudoDiv.style.display = 'block';
+            editarConteudoDiv.style.display = 'none';
+            adicionarButton.style.display = 'none';
+            salvarButton.style.display = 'none';
+
+            const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+            saveAs(blob, arquivo.name);
+        }
+    </script>
+</body>
+
+</html>
