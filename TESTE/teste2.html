@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>REALIZAR PEDIDOS</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <style>
+    table {
+      width: 40%; /* Define a largura da tabela */
+      margin: 0 auto; /* Centraliza a tabela */
+    }
+  
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    th {
+      background-color: #f2f2f2;
+    }
+  
+    /* Define a largura das colunas */
+    th:first-child, td:first-child {
+      width: 1%;
+    }
+  
+    th:nth-child(2), td:nth-child(2) {
+      width: 1%;
+    }
+  
+    th:nth-child(3), td:nth-child(3) {
+      width: 1%;
+    }
+      /* ... outras colunas ... */
+  </style>
+  <h1>TIRAR PEDIDOS</h1>
+  <div id="formsContainer">
+    <table>
+      <tr>
+        <th>Código</th>
+        <td>
+          <input type="text" id="codigo" placeholder="Digite o código">
+          <button onclick="buscarNome()">Buscar</button>
+        </td>
+      </tr>
+      <tr>
+        <th>Nome:</th>
+        <td><span id="resultadoNome"></span>
+        </td>
+        </th>
+      </tr>
+      <tr>
+        <th>Panela T1 5KG:</th>
+        <td>
+          <input type="text" id="panela1" placeholder="Qtd Arroz Panela T1 5KG">
+        <th>Valor:<input type="text" id="vpanela1" placeholder="Valor" size="1"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Panela T2 5KG:</th>
+        <td>
+          <input type="text" id="panela2" placeholder="Qtd Arroz Panela T2 5KG">
+        <th>Valor:<input type="text" id="vpanela2" placeholder="Valor Arroz Panela T2 5KG"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Panela 1KG:</th>
+        <td>
+          <input type="text" id="panela1kg" placeholder="Qtd Arroz Panela 1KG">
+        <th>Valor:<input type="text" id="vpanela1kg" placeholder="Valor Arroz Panela 1KG"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Reserva Esp:</th>
+        <td>
+          <input type="text" id="reserva" placeholder="Qtd Arroz Reserva Esp">
+        <th>Valor:<input type="text" id="vreserva" placeholder="Valor Arroz Reserva Esp"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Komabem:</th>
+        <td>
+          <input type="text" id="komabem" placeholder="Qtd Arroz Komabem">
+        <th>Valor:<input type="text" id="vkomabem" placeholder="Valor Arroz Komabem"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Komabem 2KG:</th>
+        <td>
+          <input type="text" id="komabem2kg" placeholder="Qtd Arroz Komabem 2KG">
+        <th>Valor:<input type="text" id="vkomabem2kg" placeholder="Valor Arroz Komabem 2KG"></th>
+        </td>
+      </tr>
+      </tr>
+      <tr>
+        <th>Fogao T1 5KG:</th>
+        <td>
+          <input type="text" id="fogao1" placeholder="Qtd Arroz Fogao T1 5KG">
+        <th>Valor:<input type="text" id="vfogao1" placeholder="Valor Arroz Fogao T1 5KG"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Fogao T2 5KG:</th>
+        <td>
+          <input type="text" id="fogao2" placeholder="Qtd Arroz Fogao T2 5KG">
+        <th>Valor:<input type="text" id="vfogao2" placeholder="Valor Arroz Fogao T2 5KG"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Vo Pedro 5KG:</th>
+        <td>
+          <input type="text" id="vopedro" placeholder="Qtd Arroz Vo Pedro">
+        <th>Valor:<input type="text" id="vvopedro" placeholder="Valor Arroz Vo Pedro"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Integral 1KG:</th>
+        <td>
+          <input type="text" id="integral1kg" placeholder="Qtd Arroz Integral 1KG">
+        <th>Valor:<input type="text" id="vintegral1kg" placeholder="Valor Arroz Integral 1KG">
+        </th>
+        </td>
+      </tr>
+      <tr>
+        <th>Parbolizado 5KG:</th>
+        <td>
+          <input type="text" id="parbolizado" placeholder="Qtd Arroz Parbolizado">
+        <th>Valor:<input type="text" id="vparbolizado" placeholder="Valor Arroz Parbolizado"></th>
+        </td>
+      </tr>
+      <tr>
+        <th>Prazo:</th>
+        <td>
+          <select name="prazo" id="prazo">
+            <option value="Avista">À Vista</option>
+            <option value="7 Dias">7 Dias</option>
+            <option value="14 Dias">14 Dias</option>
+            <option value="21 Dias">21 Dias</option>
+            <option value="28 Dias">28 Dias</option>
+            <option value="35 Dias">35 Dias</option>
+            <option value="42 Dias">42 Dias</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <button onclick="adicionarDados()">Adicionar</button>
+    <button onclick="gerarExcel()">Gerar Excel</button>
+    <button onclick="limpar()">Limpar Produtos</button>
+    <button onclick="limparTabela()">Limpar Pedidos </button>
+  </div>
+</body>
+
+</html>

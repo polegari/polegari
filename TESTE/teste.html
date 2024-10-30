@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Arquivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #conteudo {
+            width: 80%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        #editar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload de Arquivo</h1>
+    <form id="form-upload">
+        <input type="file" id="arquivo" accept=".json">
+        <button id="botao-upload">Upload</button>
+    </form>
+    <div id="conteudo"></div>
+    <button id="editar" onclick="editarDados()">Editar</button>
+    <div id="editar-conteudo" style="display:none;"></div>
+
+    <script src="(link unavailable)"></script>
+    <script>
+        const form = document.getElementById('form-upload');
+        const arquivoInput = document.getElementById('arquivo');
+        const conteudoDiv = document.getElementById('conteudo');
+        const editarButton = document.getElementById('editar');
+        const editarConteudoDiv = document.getElementById('editar-conteudo');
+        let dados;
+        let arquivo;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            arquivo = arquivoInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                dados = JSON.parse(reader.result);
+                const conteudo = dados.map((item) => `${item.codigo} - ${item.nome}`).join('\n');
+                conteudoDiv.innerText = conteudo;
+                editarButton.style.display = 'block';
+            };
+
+            reader.readAsText(arquivo);
+        });
+
+        function editarDados() {
+            editarConteudoDiv.innerHTML = '';
+            dados.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label>Código:</label>
+                    <input type="text" value="${item.codigo}" data-index="${index}">
+                    <label>Nome:</label>
+                    <input type="text" value="${item.nome}" data-index="${index}">
+                `;
+                editarConteudoDiv.appendChild(div);
+            });
+            const salvarButton = document.createElement('button');
+            salvarButton.textContent = 'Salvar';
+            salvarButton.onclick = salvarDados;
+            editarConteudoDiv.appendChild(salvarButton);
+            conteudoDiv.style.display = 'none';
+            editarConteudoDiv.style.display = 'block';
+        }
+
+        function salvarDados() {
+            dados = Array.from(editarConteudoDiv.children).filter((child) => child.tagName === 'DIV').map((div) => {
+                const inputs = div.querySelectorAll('input');
+                return {
+                    codigo: inputs[0].value,
+                    nome: inputs[1].value
+                };
+            });
+            const conteudo = dados.map((item) => `${item.codigo} - ${item.nome}`).join('\n');
+            conteudoDiv.innerText = conteudo;
+            conteudoDiv.style.display = 'block';
+            editarConteudoDiv.style.display = 'none';
+
+            const blob = new Blob([JSON.stringify(dados, null, 2)], {type: 'application/json'});
+            saveAs(blob, arquivo.name);
+        }
+    </script>
+</body>
+</html>
