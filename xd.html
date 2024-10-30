@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tabela Exemplo</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 50%;
+		}
+		th {
+			border: 1px solid #000;
+			padding: 10px;
+			text-align: center;
+		}
+		td {
+			border: 1px solid #000;
+			padding: 10px;
+			text-align: center;
+		}
+		.coluna-1 {
+			width: 10%;
+		}
+		.coluna-2 {
+			width: 10%;
+		}
+		.coluna-3 {
+			width: 10%;
+		}
+		.coluna-4 {
+			width: 10%;
+		}
+	        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 3px;
+            margin: 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btnremove {
+            background-color: #f44336;
+        }
+
+        .btnremove:hover {
+            background-color: #ff8080;
+        }
+	.btnadd {
+		background-color: #45a049;
+	}
+	.btnbuscar {
+		background-color: #2F4F7F
+	}
+	</style>
+</head>
+<body>
+<table>
+<tr>
+<th class="coluna-1">Codigo</th>
+<th class="coluna-2"><input type="text" id="codigo" placeholder="Digite o código"></th>
+<th class="coluna-3"><button class="btnbuscar" onclick="buscarNome()">Buscar</button></th>
+</tr>
+<tr>
+<td class="coluna-1">Nome:</td>
+<td class="coluna-2" colspan="3"><span id="resultadoNome"></span></td>
+</tr>
+<tr>
+<td class="coluna-1">Panela T1 5KG:</td>
+<td class="coluna-2"><input type="text" id="panela1" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vpanela1" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Panela T2 5KG:</td>
+<td class="coluna-2"><input type="text" id="panela2" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vpanela2" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Panela 1KG:</td>
+<td class="coluna-2"><input type="text" id="panela1kg" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vpanela1kg" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Res Esp:</td>
+<td class="coluna-2"><input type="text" id="resesp" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vresesp" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Komabem 5KG:</td>
+<td class="coluna-2"><input type="text" id="komabem" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vkomabem" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Komabem 2KG:</td>
+<td class="coluna-2"><input type="text" id="komabem2kg" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vkomabem2kg" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Fogao T1 5KG:</td>
+<td class="coluna-2"><input type="text" id="fogao" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vfogao" placeholder="Valor" size="1"></td>
+</tr>
+<tr>
+<td class="coluna-1">Fogao T2 5KG:</td>
+<td class="coluna-2"><input type="text" id="fogaot2" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vfogaot2" placeholder="Valor" size="1"></td>
+</tr>
+	<tr>
+<td class="coluna-1">Vo Pedro 5KG:</td>
+<td class="coluna-2"><input type="text" id="vopedro" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vvopedro" placeholder="Valor" size="1"></td>
+</tr>
+	<tr>
+<td class="coluna-1">Integral 1KG:</td>
+<td class="coluna-2"><input type="text" id="integral" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vintegral" placeholder="Valor" size="1"></td>
+</tr>
+	<tr>
+<td class="coluna-1">Parbolizado 5KG:</td>
+<td class="coluna-2"><input type="text" id="parbolizado" placeholder="Qtd" size="1"></td>
+<td class="coluna-3">Valor:</td>
+<td class="coluna-4"><input type="text" id="vparbolizado" placeholder="Valor" size="1"></td>
+</tr>
+	<tr>
+<td class="coluna-1">Prazo:</td>
+<td class="coluna-2" colspan="3"><select id="prazo">
+                                <option value="Avista">A Vista</option>
+                                <option value="7 Dias">7 Dias</option>
+                                <option value="14 Dias">14 Dias</option>
+                                <option value="21 Dias">21 Dias</option>
+                                <option value="28 Dias">28 Dias</option>
+                                <option value="35 Dias">35 Dias</option>
+                                <option value="42 Dias">42 Dias</option>
+                            </select></td>
+</tr>
+	<tr>
+		<td class="coluna-1" colspan="4">
+			    <button class="btnadd" onclick="adicionarDados()">Adicionar</button>
+    <button onclick="gerarExcel()">Gerar Excel</button>
+    <button class="btnremove"onclick="limparDados()">Limpar Produtos</button>
+		</td>
+	</tr>
+	</table>
+	
+	<p><label> PEDIDOS</label></p>
+    <table id="resultado">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Cliente</th>
+                <th>Panela T1 5KG</th>
+                <th>Valor Panela T1 5KG</th>
+                <th>Panela T2 5KG</th>
+                <th>Valor Panela T2 5KG</th>
+                <th>Panela 1KG</th>
+                <th>Valor Panela 1KG</th>
+                <th>Reserva Esp</th>
+                <th>Valor Reserva Esp</th>
+                <th>Komabem</th>
+                <th>Valor Komabem</th>
+                <th>Komabem 2KG</th>
+                <th>Valor Komabem 2KG</th>
+                <th>Fogao T1 5KG</th>
+                <th>Valor Fogao T1 5KG</th>
+                <th>Fogao T2 5KG</th>
+                <th>Valor Fogao T2 5KG</th>
+                <th>Vo Pedro 5KG</th>
+                <th>Valor Vo Pedro 5KG</th>
+                <th>Integral 1KG</th>
+                <th>Valor Integrak 1KG</th>
+                <th>Parbolizado 5KG</th>
+                <th>Valor Parbolizado 5KG</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+	
+	<script>
+function limparDados() {
+  // Limpar os campos de entrada
+  document.getElementById('codigo').value = '';
+  document.getElementById('panela1').value = '';
+  document.getElementById('vpanela1').value = '';
+  document.getElementById('panela2').value = '';
+  document.getElementById('vpanela2').value = '';
+  document.getElementById('panela1kg').value = '';
+  document.getElementById('vpanela1kg').value = '';
+  document.getElementById('resesp').value = '';
+  document.getElementById('vresesp').value = '';
+  document.getElementById('komabem').value = '';
+  document.getElementById('vkomabem').value = '';
+  document.getElementById('komabem2kg').value = '';
+  document.getElementById('vkomabem2kg').value = '';
+  document.getElementById('fogao').value = '';
+  document.getElementById('vfogao').value = '';
+  document.getElementById('fogaot2').value = '';
+  document.getElementById('vfogaot2').value = '';
+  document.getElementById('vopedro').value = '';
+  document.getElementById('vvopedro').value = '';
+  document.getElementById('integral').value = '';
+  document.getElementById('vintegral').value = '';
+  document.getElementById('parbolizado').value = '';
+  document.getElementById('vparbolizado').value = '';
+	document.getElementById('prazo').selectedIndex = 0;
+	
+}
+	
+	function adicionarDados() {
+  // Recuperar os valores dos campos
+  const codigo = document.getElementById('codigo').value;
+  const cliente = document.getElementById('resultadoNome').textContent;
+  const panela1 = document.getElementById('panela1').value;
+  const vpanela1 = document.getElementById('vpanela1').value;
+  const panela2 = document.getElementById('panela2').value;
+  const vpanela2 = document.getElementById('vpanela2').value;
+  const panela1kg = document.getElementById('panela1kg').value;
+  const vpanela1kg = document.getElementById('vpanela1kg').value;
+  const resesp = document.getElementById('resesp').value;
+  const vresesp = document.getElementById('vresesp').value;
+  const komabem = document.getElementById('komabem').value;
+  const vkomabem = document.getElementById('vkomabem').value;
+  const komabem2kg = document.getElementById('komabem2kg').value;
+  const vkomabem2kg = document.getElementById('vkomabem2kg').value;
+  const fogao = document.getElementById('fogao').value;
+  const vfogao = document.getElementById('vfogao').value;
+  const fogaot2 = document.getElementById('fogaot2').value;
+  const vfogaot2 = document.getElementById('vfogaot2').value;
+  const vopedro = document.getElementById('vopedro').value;
+  const vvopedro = document.getElementById('vvopedro').value;
+  const integral = document.getElementById('integral').value;
+  const vintegral = document.getElementById('vintegral').value;
+  const parbolizado = document.getElementById('parbolizado').value;
+  const vparbolizado = document.getElementById('vparbolizado').value;
+  const prazo = document.getElementById('prazo').value;
+
+  // Criar uma linha na tabela de resultado
+  const tabelaResultado = document.getElementById('resultado');
+  const linha = tabelaResultado.insertRow(-1);
+
+  // Adicionar colunas à linha
+  const colunas = [
+    codigo,
+    cliente,
+    panela1,
+    vpanela1,
+    panela2,
+    vpanela2,
+    panela1kg,
+    vpanela1kg,
+    resesp,
+    vresesp,
+    komabem,
+    vkomabem,
+    komabem2kg,
+    vkomabem2kg,
+    fogao,
+    vfogao,
+    fogaot2,
+    vfogaot2,
+    vopedro,
+    vvopedro,
+    integral,
+    vintegral,
+    parbolizado,
+    vparbolizado,
+    prazo
+  ];
+
+  for (let i = 0; i < colunas.length; i++) {
+    const celula = linha.insertCell(i);
+    celula.textContent = colunas[i];
+  }
+
+  // Limpar os campos de entrada
+  limparTabela();
+}
+	
+	// Carregar dados JSON
+let dados = [];
+
+fetch('codigos.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Erro ${response.status}: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    dados = data;
+  })
+  .catch(error => {
+    console.error('Erro ao carregar os dados:', error);
+  });
+
+// Função buscarNome
+function buscarNome() {
+  const codigoInput = document.getElementById('codigo');
+  const resultado = document.getElementById('resultadoNome');
+  const codigoBuscado = codigoInput.value.trim();
+
+  if (!codigoBuscado) {
+    resultado.textContent = "Digite um código válido.";
+    return;
+  }
+
+  const codigoEncontrado = dados.find(item => item.codigo === codigoBuscado);
+
+  if (codigoEncontrado) {
+    resultado.textContent = codigoEncontrado.nome;
+  } else {
+    resultado.textContent = "Código não encontrado.";
+  }
+}
+
+// Chamar a função adicionarDados após os dados serem carregados
+document.addEventListener('DOMContentLoaded', () => {
+  if (dados.length > 0) {
+    adicionarDados();
+  }
+});
+	
+	</script>
+</body>
+</html>
+
+
+
