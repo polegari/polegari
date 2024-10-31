@@ -64,7 +64,7 @@
       .container {
         position: relative;
         width: 60px;
-        margin: 20px auto;
+        margin: 20px 0 0 20px; /* ajuste aqui */
       }
 
       .btn {
@@ -160,7 +160,7 @@
 
       .menu {
         position: absolute;
-        top: 70px; /* altere para 0px */
+        top: 70px;
         left: 0;
         background-color: #333;
         width: 200px;
@@ -190,15 +190,40 @@
       .menu a:hover {
         color: #ccc;
       }
+
+      .tabelapedidos {
+        margin-left: 200px; /* ajuste o valor conforme necessário */
+      }
+
+      /*TABELA EXIBIDA NA TELA E GERADA EXCEL*/
+      #resultado {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      #resultado th,
+      #resultado td {
+        border: 1px solid #000;
+        padding: 5px;
+        word-wrap: break-word;
+        word-break: break-all;
+        table-layout: fixed;
+      }
+
+      #resultado tr:first-child td {
+        text-align: center;
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <!-- Menu Hamburger -->
       <div class="btn">
         <div class="btn-left"></div>
         <div class="btn-right"></div>
       </div>
       <div class="menu">
+        <!-- Opções do menu -->
         <ul>
           <li><a href="#">INÍCIO</a></li>
           <li>
@@ -222,7 +247,10 @@
         </ul>
       </div>
     </div>
-    <table>
+    <br /><br /><br /><br /><br />
+
+    <!-- Tabela de pedidos -->
+    <table class="tabelapedidos">
       <tr>
         <th class="coluna-1">Codigo</th>
         <th class="coluna-2">
@@ -371,6 +399,8 @@
         </td>
       </tr>
     </table>
+
+    <!-- Tabela de resultados -->
     <p><em> PEDIDOS</em></p>
     <details>
       <table id="resultado">
@@ -379,34 +409,33 @@
             <th>Código</th>
             <th>Cliente</th>
             <th>Panela T1 5KG</th>
-            <th>Valor Panela T1 5KG</th>
+            <th>Valor</th>
             <th>Panela T2 5KG</th>
-            <th>Valor Panela T2 5KG</th>
+            <th>Valor</th>
             <th>Panela 1KG</th>
-            <th>Valor Panela 1KG</th>
+            <th>Valor</th>
             <th>Reserva Esp</th>
-            <th>Valor Reserva Esp</th>
-            <th>Komabem</th>
-            <th>Valor Komabem</th>
+            <th>Valor</th>
+            <th>Komabem 5KG</th>
+            <th>Valor</th>
             <th>Komabem 2KG</th>
-            <th>Valor Komabem 2KG</th>
+            <th>Valor</th>
             <th>Fogao T1 5KG</th>
-            <th>Valor Fogao T1 5KG</th>
+            <th>Valor</th>
             <th>Fogao T2 5KG</th>
-            <th>Valor Fogao T2 5KG</th>
+            <th>Valor</th>
             <th>Vo Pedro 5KG</th>
-            <th>Valor Vo Pedro 5KG</th>
+            <th>Valor</th>
             <th>Integral 1KG</th>
-            <th>Valor Integrak 1KG</th>
+            <th>Valor</th>
             <th>Parbolizado 5KG</th>
-            <th>Valor Parbolizado 5KG</th>
+            <th>Valor</th>
             <th>Prazo</th>
           </tr>
         </tbody>
       </table>
     </details>
     <script>
-
       // Selecione o botão e o menu
       const btn = document.querySelector(".btn");
       const menu = document.querySelector(".menu");
