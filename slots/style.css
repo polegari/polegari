@@ -174,33 +174,4 @@ tr:hover {
       margin-right: 0;
       margin-bottom: 10px;
   }
-
-  /* Estilos específicos para a tabela em telas menores */
-  table {
-    display: block; /* Importante para responsividade */
-    overflow-x: auto; /* Adiciona barra de rolagem horizontal */
-    table-layout: auto; /* Deixa as colunas se ajustarem ao conteúdo */
-}
-
-th, td {
-    white-space: normal; /* Permite quebra de linha em telas menores */
-    text-align: left; /* Alinha o texto à esquerda */
-}
-
-/* Ocultar colunas específicas em telas menores (opcional) */
-.desktop-only { /* Adicione essa classe às colunas que deseja ocultar */
-    display: none;
-}
-
-/* Estilos para os botões de ação (Editar e Excluir) */
-.acoes {
-    display: flex; /* Alinha os botões horizontalmente */
-    flex-direction: column; /* Alinha os botões verticalmente em telas menores */
-    align-items: flex-start; /* Alinha os botões à esquerda */
-}
-
-.acoes button {
-    margin: 5px 0; /* Espaçamento entre os botões */
-    width: 100%; /* Largura total dos botões */
-}
 }
