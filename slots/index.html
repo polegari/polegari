@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+
+    <nav>
+        <div class="menu-container"> <a href="index.html" class="logo">Início</a> <ul>
+                <li><a href="result.html">Resultados</a></li>
+                <li><a href="#">Outra Opção</a></li> <li><a href="#">Mais Opções</a></li> </ul>
+        </div>
+    </nav>
+
+    <div class="container"> <h1>Formulário de Cadastro</h1>
+
+        <form id="cadastroForm">
+            <div class="input-group"> <label for="plataforma">Plataforma:</label>
+                <input type="text" id="plataforma" name="plataforma" placeholder="Nome da plataforma" required>
+            </div>
+
+            <div class="input-group">
+                <label for="linkCadastro">Link de Cadastro:</label>
+                <input type="url" id="linkCadastro" name="linkCadastro" placeholder="URL do link de cadastro" required>
+            </div>
+
+            <div class="input-group">
+                <label for="linkTelegram">Link do Telegram:</label>
+                <input type="url" id="linkTelegram" name="linkTelegram" placeholder="URL do link do telegram" required>
+            </div>
+
+            <div class="input-group">
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" min="09:00" max="18:00" step="300" required>
+            </div>
+
+            <div class="input-group">
+                <label for="bonus">Bônus:</label>
+                <input type="text" id="bonus" name="bonus" placeholder="Bônus oferecido no cadastro (ex: R$10,00)">
+            </div>
+
+            <div class="input-group">
+                <label for="depositoMinimo">Depósito Mínimo:</label>
+                <input type="text" id="depositoMinimo" name="depositoMinimo" placeholder="Valor mínimo para depósito (ex: R$10,00)"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label for="saqueMinimo">Saque Mínimo:</label>
+                <input type="text" id="saqueMinimo" name="saqueMinimo" placeholder="Valor mínimo para saque (ex: R$10,00)"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label for="numeroAfiliados">Número de Afiliados:</label>
+                <input type="number" id="numeroAfiliados" name="numeroAfiliados" placeholder="Número de afiliados" min="0">
+            </div>
+
+            <button type="button" id="salvarButton" onclick="salvarCadastro()">Salvar</button>
+        </form>
+
+        <div class="search-container"> <label for="campoBusca">Pesquisar:</label>
+            <input type="text" id="campoBusca" placeholder="Digite o termo de busca">
+            <button type="button" onclick="buscarCadastro()">Buscar</button>
+            <button type="button" onclick="limparCampoBusca()">Limpar Busca</button>
+        </div>
+
+        <h2>Lista de Cadastros</h2>
+        <table id="listaCadastros">
+            <thead>
+                <tr>
+                    <th>Plataforma</th>
+                    <th>Link de Cadastro</th>
+                    <th>Link do Telegram</th>
+                    <th>Hora</th>
+                    <th>Bônus</th>
+                    <th>Depósito Mínimo</th>
+                    <th>Saque Mínimo</th>
+                    <th>Número de Afiliados</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

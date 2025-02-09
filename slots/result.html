@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="scriptresult.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="menu-container">
+            <a href="index.html" class="logo">Início</a>
+            <ul>
+                <li><a href="result.html">Resultados</a></li>
+                <li><a href="#">Outra Opção</a></li>
+                <li><a href="#">Mais Opções</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Resultados dos Cadastros</h1>
+
+        <table id="listaCadastros">
+            <thead>
+                <tr>
+                    <th>Plataforma</th>
+                    <th>Link de Cadastro</th>
+                    <th>Link do Telegram</th>
+                    <th>Hora</th>
+                    <th>Bônus</th>
+                    <th>Depósito Mínimo</th>
+                    <th>Saque Mínimo</th>
+                    <th>Número de Afiliados</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            exibirCadastros();
+        });
+
+        function exibirCadastros() {
+            const listaCadastros = document.getElementById('listaCadastros').getElementsByTagName('tbody')[0];
+            listaCadastros.innerHTML = ''; // Limpa a tabela
+
+            const cadastros = obterCadastros(); // Função do script.js para obter os dados
+
+            cadastros.forEach(cadastro => {
+                const row = listaCadastros.insertRow();
+                const plataforma = row.insertCell();
+                const linkCadastro = row.insertCell();
+                const linkTelegram = row.insertCell();
+                const hora = row.insertCell();
+                const bonus = row.insertCell();
+                const depositoMinimo = row.insertCell();
+                const saqueMinimo = row.insertCell();
+
+                plataforma.textContent = cadastro.plataforma;
+                linkCadastro.textContent = cadastro.linkCadastro;
+                linkTelegram.textContent = cadastro.linkTelegram;
+                hora.textContent = cadastro.hora;
+                bonus.textContent = cadastro.bonus;
+                depositoMinimo.textContent = cadastro.depositoMinimo;
+                saqueMinimo.textContent = cadastro.saqueMinimo;
+            });
+        }
+    </script>
+</body>
+
+</html>

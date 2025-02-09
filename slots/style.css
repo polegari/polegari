@@ -1,0 +1,177 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0; /* Remove margem padrão do body para o container controlar */
+}
+
+.container {
+  width: 80%; /* Largura do container principal */
+  margin: 20px auto; /* Centraliza o container */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+/* Estilos para o menu */
+nav {
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+.menu-container {
+  display: flex;
+  justify-content: space-between; /* Espaça logo e itens do menu */
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.logo {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold; /* Estilo para o logo */
+  font-size: 1.2em; /* Tamanho do logo */
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 4px; /* Bordas arredondadas nos links */
+  transition: background-color 0.3s ease; /* Transição suave */
+}
+
+nav a:hover {
+  background-color: #ddd;
+}
+
+
+form {
+  max-width: 400px;
+  margin: 20px auto; /* Margem superior ajustada */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.input-group { /* Estilo para agrupar label e input */
+  margin-bottom: 10px;
+}
+
+label {
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input,
+select,
+textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  width: calc(100% - 18px);
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.search-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex; /* Alinha os elementos de busca horizontalmente */
+  align-items: center; /* Alinha verticalmente */
+}
+
+.search-container input {
+  flex-grow: 1; /* Input ocupa espaço disponível */
+  margin-right: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd; /* Cor mais suave ao passar o mouse na tabela */
+}
+
+@media (max-width: 768px) {
+  .container {
+      width: 95%; /* Largura do container em telas menores */
+  }
+
+  .menu-container {
+      flex-direction: column; /* Menu em coluna em telas menores */
+      align-items: flex-start; /* Alinha itens do menu à esquerda */
+  }
+
+  nav ul {
+      flex-direction: column; /* Itens do menu em coluna */
+  }
+
+  nav li {
+      margin: 5px 0; /* Espaçamento entre itens do menu */
+  }
+
+  .search-container {
+      flex-direction: column; /* Busca em coluna */
+      align-items: stretch; /* Input ocupa toda a largura */
+  }
+
+  .search-container input {
+      margin-right: 0;
+      margin-bottom: 10px;
+  }
+}
