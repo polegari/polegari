@@ -1,251 +1,182 @@
-function limparCampoBusca() {
-  document.getElementById("campoBusca").value = ""; // Limpa o campo de busca
-  atualizarListaCadastros(); // Exibe todos os cadastros
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const cadastrarBtn = document.getElementById('cadastrar');
+    const modalCadastro = document.getElementById('modal-cadastro');
+    const modalEditar = document.getElementById('modal-editar');
+    const fecharModalBtns = document.querySelectorAll('.fechar-modal');
+    const formularioCadastro = document.getElementById('formulario-cadastro');
+    const formularioEditar = document.getElementById('formulario-editar');
+    const tabelaPlataformas = document.getElementById('tabela-plataformas');
+    const barraPesquisa = document.getElementById('barra-pesquisa');
 
-      // Função para salvar o cadastro no LocalStorage
-  function salvarCadastro() {
-    const plataforma = document.getElementById("plataforma").value;
-    const linkCadastro = document.getElementById("linkCadastro").value;
-    const linkTelegram = document.getElementById("linkTelegram").value;
-    const hora = document.getElementById("hora").value;
-    const bonus = document.getElementById("bonus").value;
-    const depositoMinimo = document.getElementById("depositoMinimo").value;
-    const saqueMinimo = document.getElementById("saqueMinimo").value;
-    const numeroAfiliados = document.getElementById('numeroAfiliados').value;
+    let currentPage = 1;
+    const itemsPerPage = 5;
 
-    const cadastro = {
-        plataforma: plataforma,
-        linkCadastro: linkCadastro,
-        linkTelegram: linkTelegram,
-        hora: hora,
-        bonus: parseFloat(bonus.replace(/[^\d,-]/g, '').replace(',', '.')), // Converte para número
-        depositoMinimo: parseFloat(depositoMinimo.replace(/[^\d,-]/g, '').replace(',', '.')), // Converte para número
-        saqueMinimo: parseFloat(saqueMinimo.replace(/[^\d,-]/g, '').replace(',', '.')), // Converte para número
-        numeroAfiliados: parseFloat(numeroAfiliados.replace(/[^\d,-]/g, '').replace(',', '.'))
-    };
+    function getCookies() {
+        const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+            const [key, value] = cookie.split('=');
+            acc[key] = decodeURIComponent(value);
+            return acc;
+        }, {});
+        return cookies;
+    }
 
-    let cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    cadastros.push(cadastro);
-    localStorage.setItem("cadastros", JSON.stringify(cadastros));
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
 
-    atualizarListaCadastros();
-    limparFormulario();
-  }
+    function getPlataformas() {
+        const cookies = getCookies();
+        return cookies.plataformas ? JSON.parse(cookies.plataformas) : [];
+    }
 
-  // Função para atualizar a lista de cadastros na tabela
-function atualizarListaCadastros() {
-    const listaCadastros = document.getElementById("listaCadastros").getElementsByTagName("tbody")[0];
-    listaCadastros.innerHTML = "";
+    function setPlataformas(plataformas) {
+        setCookie('plataformas', JSON.stringify(plataformas), 30);
+    }
 
-    const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    cadastros.forEach((cadastro, index) => {
-        const row = listaCadastros.insertRow();
-        const plataformaCell = row.insertCell();
-        const linkCadastroCell = row.insertCell();
-        const linkTelegramCell = row.insertCell();
-        const horaCell = row.insertCell();
-        const bonusCell = row.insertCell();
-        const depositoMinimoCell = row.insertCell();
-        const saqueMinimoCell = row.insertCell();
-        const numeroAfiliadosCell = row.insertCell();
-        const actionsCell = row.insertCell();
+    let plataformas = getPlataformas();
 
-        plataformaCell.textContent = cadastro.plataforma;
-        horaCell.textContent = cadastro.hora;
+    function atualizarTabela() {
+        const termoPesquisa = barraPesquisa.value.toLowerCase();
+        const plataformasFiltradas = plataformas.filter(plataforma => {
+            return plataforma.plataforma.toLowerCase().includes(termoPesquisa) ||
+                   plataforma.link.toLowerCase().includes(termoPesquisa) ||
+                   plataforma.linktelegram.toLowerCase().includes(termoPesquisa) ||
+                   plataforma.bonus.toLowerCase().includes(termoPesquisa) ||
+                   plataforma.deposito.toString().includes(termoPesquisa);
+        });
 
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPagePlataformas = plataformasFiltradas.slice(startIndex, endIndex);
 
-        const linkElement = document.createElement("a");
-        linkElement.href = cadastro.linkCadastro;
-        linkElement.textContent = cadastro.linkCadastro;
-        linkElement.target = "_blank";
-        linkCadastroCell.appendChild(linkElement);
+        tabelaPlataformas.innerHTML = '';
+        currentPagePlataformas.forEach((plataforma, index) => {
+            const row = tabelaPlataformas.insertRow();
+            row.innerHTML = `
+                <td>${plataforma.plataforma}</td>
+                <td><a href="${plataforma.link}" target="_blank">${plataforma.link}</a></td>
+                <td><a href="${plataforma.linktelegram}" target="_blank">${plataforma.linktelegram}</a></td>
+                <td>${plataforma.bonus}</td>
+                <td>${plataforma.deposito}</td>
+                <td>
+                    <button class="editar-btn" data-index="${index}">Editar</button>
+                    <button class="excluir-btn" data-index="${index}">Excluir</button>
+                </td>
+            `;
+        });
 
-        const linkTelegramElement = document.createElement("a");
-        linkTelegramElement.href = cadastro.linkTelegram;
-        linkTelegramElement.textContent = cadastro.linkTelegram;
-        linkTelegramElement.target = "_blank";
-        linkTelegramCell.appendChild(linkTelegramElement);
+        document.querySelectorAll('.editar-btn').forEach(btn => {
+            btn.addEventListener('click', editarPlataforma);
+        });
 
-        // Formatação da moeda
-        const formatacaoMoeda = { style: 'currency', currency: 'BRL' };
-        bonusCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.bonus);
-        depositoMinimoCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.depositoMinimo);
-        saqueMinimoCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.saqueMinimo);
-        numeroAfiliadosCell.textContent = cadastro.numeroAfiliados;
+        document.querySelectorAll('.excluir-btn').forEach(btn => {
+            btn.addEventListener('click', excluirPlataforma);
+        });
 
+        atualizarPaginacao(plataformasFiltradas.length);
+    }
 
-        const editarButton = document.createElement("button");
-        editarButton.textContent = "Editar";
-        editarButton.onclick = () => editarCadastro(index);
-        actionsCell.appendChild(editarButton);
+    function atualizarPaginacao(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const paginacaoDiv = document.getElementById('paginacao');
+        paginacaoDiv.innerHTML = '';
 
-        const excluirButton = document.createElement("button");
-        excluirButton.textContent = "Excluir";
-        excluirButton.onclick = () => excluirCadastro(index);
-        actionsCell.appendChild(excluirButton);
+        for (let i = 1; i <= totalPages; i++) {
+            const paginaBtn = document.createElement('button');
+            paginaBtn.textContent = i;
+            paginaBtn.addEventListener('click', () => {
+                currentPage = i;
+                atualizarTabela();
+            });
+            paginacaoDiv.appendChild(paginaBtn);
+        }
+    }
+
+    function abrirModal(modal) {
+        modal.style.display = 'block';
+    }
+
+    function fecharModal(modal) {
+        modal.style.display = 'none';
+    }
+
+    cadastrarBtn.addEventListener('click', () => abrirModal(modalCadastro));
+
+    fecharModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            fecharModal(modalCadastro);
+            fecharModal(modalEditar);
+        });
     });
-}
 
-  // Função para editar um cadastro
-  function editarCadastro(index) {
-    const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    const cadastro = cadastros[index];
-
-    document.getElementById("plataforma").value = cadastro.plataforma;
-    document.getElementById("linkCadastro").value = cadastro.linkCadastro;
-    document.getElementById("linkTelegram").value = cadastro.linkTelegram;
-    document.getElementById("hora").value = cadastro.hora;
-    document.getElementById("bonus").value = cadastro.bonus;
-    document.getElementById("depositoMinimo").value = cadastro.depositoMinimo;
-    document.getElementById("saqueMinimo").value = cadastro.saqueMinimo;
-    document.getElementById("numeroAfiliados").value = cadastro.numeroAfiliados;
-
-
-    // Oculta o botão "Salvar"
-    document.getElementById("salvarButton").style.display = "none";
-
-    // Cria o botão "Salvar Edição"
-    const salvarEdicaoButton = document.createElement("button");
-    salvarEdicaoButton.textContent = "Salvar Edição";
-    salvarEdicaoButton.id = "salvarEdicaoButton"; // Adiciona um ID para facilitar a remoção posterior
-    salvarEdicaoButton.onclick = () => {
-      cadastros[index] = {
-        plataforma: document.getElementById("plataforma").value,
-        linkCadastro: document.getElementById("linkCadastro").value,
-        linkTelegram: document.getElementById("linkTelegram").value,
-        hora: document.getElementById("hora").value,
-        bonus: document.getElementById("bonus").value,
-        depositoMinimo: document.getElementById("depositoMinimo").value,
-        saqueMinimo: document.getElementById("saqueMinimo").value,
-        numeroAfiliados: document.getElementById("numeroAfiliados").value
-      };
-      localStorage.setItem("cadastros", JSON.stringify(cadastros));
-      atualizarListaCadastros();
-      limparFormulario();
-
-      // Exibe o botão "Salvar" novamente
-      document.getElementById("salvarButton").style.display = "block";
-      
-
-      // Remove o botão "Salvar Edição"
-      document.getElementById("cadastroForm").removeChild(salvarEdicaoButton);
-    };
-
-    // Adiciona uma quebra de linha antes do botão
-    const quebraLinha = document.createElement("br");
-    document.getElementById("cadastroForm").appendChild(quebraLinha);
-    document.getElementById("cadastroForm").appendChild(salvarEdicaoButton);
-  }
-
-  // Função para excluir um cadastro
-  function excluirCadastro(index) {
-    let cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    cadastros.splice(index, 1);
-    localStorage.setItem("cadastros", JSON.stringify(cadastros));
-    atualizarListaCadastros();
-  }
-
-  // Função para limpar o formulário após salvar ou editar
-  function limparFormulario() {
-    document.getElementById("plataforma").value = "";
-    document.getElementById("linkCadastro").value = "";
-    document.getElementById("linkTelegram").value = "";
-    document.getElementById("hora").value = "";
-    document.getElementById("bonus").value = "";
-    document.getElementById("depositoMinimo").value = "";
-    document.getElementById("saqueMinimo").value = "";
-    document.getElementById("numeroAfiliados").value = "";
-  }
-
-  // Inicializar a lista de cadastros ao carregar a página
-  atualizarListaCadastros();
-
-  function buscarCadastro() {
-  const termoBusca = document.getElementById("campoBusca").value;
-  const resultados = realizarBusca(termoBusca);
-  atualizarTabela(resultados);
-}
-
-function realizarBusca(termo) {
-    const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    return cadastros.filter(cadastro => {
-        return (
-            cadastro.plataforma.toLowerCase().includes(termo.toLowerCase()) ||
-            cadastro.linkCadastro.toLowerCase().includes(termo.toLowerCase()) ||
-            cadastro.linkTelegram.toLowerCase().includes(termo.toLowerCase()) ||
-            cadastro.hora.toLowerCase().includes(termo.toLowerCase()) ||
-            cadastro.bonus.toString().includes(termo) || // Agora é número, converte para string para busca
-            cadastro.depositoMinimo.toString().includes(termo) || // Agora é número, converte para string para busca
-            cadastro.saqueMinimo.toString().includes(termo) || // Agora é número, converte para string para busca
-            cadastro.numeroAfiliados.toString().includes(termo) // Agora é número, converte para string para busca
-        );
+    window.addEventListener('click', (event) => {
+        if (event.target === modalCadastro) {
+            fecharModal(modalCadastro);
+        }
+        if (event.target === modalEditar) {
+            fecharModal(modalEditar);
+        }
     });
-}
 
-function atualizarTabela(resultados) {
-  const listaCadastros = document.getElementById("listaCadastros").getElementsByTagName("tbody")[0];
-  listaCadastros.innerHTML = ""; // Limpa a tabela
+    formularioCadastro.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const plataforma = {
+            plataforma: document.getElementById('plataforma').value,
+            link: document.getElementById('link').value,
+            linktelegram: document.getElementById('linktelegram').value,
+            bonus: document.getElementById('bonus').value,
+            deposito: document.getElementById('deposito').value
+        };
+        plataformas.push(plataforma);
+        setPlataformas(plataformas);
+        atualizarTabela();
+        formularioCadastro.reset();
+        fecharModal(modalCadastro);
+    });
 
-  resultados.forEach((cadastro, index) => {
-    const row = listaCadastros.insertRow();
-    const plataformaCell = row.insertCell();
-    const linkCadastroCell = row.insertCell();
-    const linkTelegramCell = row.insertCell();
-    const horaCell = row.insertCell();
-    const bonusCell = row.insertCell();
-    const depositoMinimoCell = row.insertCell();
-    const saqueMinimoCell = row.insertCell();
-    const numeroAfiliadosCell = row.insertCell();
-    const actionsCell = row.insertCell();
+    function editarPlataforma(event) {
+        const index = parseInt(event.target.dataset.index);
+        const plataforma = plataformas[index];
 
-    plataformaCell.textContent = cadastro.plataforma;
-    horaCell.textContent = cadastro.hora;
-	
-	const formatacaoMoeda = { style: 'currency', currency: 'BRL' };
-    bonusCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.bonus);
-    depositoMinimoCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.depositoMinimo);
-    saqueMinimoCell.textContent = new Intl.NumberFormat('pt-BR', formatacaoMoeda).format(cadastro.saqueMinimo);
-    numeroAfiliadosCell.textContent = cadastro.numeroAfiliados;
+        document.getElementById('id-plataforma').value = index;
+        document.getElementById('plataforma-editar').value = plataforma.plataforma;
+        document.getElementById('link-editar').value = plataforma.link;
+        document.getElementById('linktelegram-editar').value = plataforma.linktelegram;
+        document.getElementById('bonus-editar').value = plataforma.bonus;
+        document.getElementById('deposito-editar').value = plataforma.deposito;
 
-    const linkElement = document.createElement("a");
-    linkElement.href = cadastro.linkCadastro;
-    linkElement.textContent = cadastro.linkCadastro;
-    linkElement.target = "_blank";
-    linkCadastroCell.appendChild(linkElement);
+        abrirModal(modalEditar);
+    }
 
-    const linkTelegramElement = document.createElement("a");
-    linkTelegramElement.href = cadastro.linkTelegram;
-    linkTelegramElement.textContent = cadastro.linkTelegram;
-    linkTelegramElement.target = "_blank";
-    linkTelegramCell.appendChild(linkTelegramElement);
+    formularioEditar.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const index = parseInt(document.getElementById('id-plataforma').value);
+        plataformas[index] = {
+            plataforma: document.getElementById('plataforma-editar').value,
+            link: document.getElementById('link-editar').value,
+            linktelegram: document.getElementById('linktelegram-editar').value,
+            bonus: document.getElementById('bonus-editar').value,
+            deposito: document.getElementById('deposito-editar').value
+        };
+        setPlataformas(plataformas);
+        atualizarTabela();
+        fecharModal(modalEditar);
+    });
 
-    bonusCell.textContent = cadastro.bonus;
-    depositoMinimoCell.textContent = cadastro.depositoMinimo;
-    saqueMinimoCell.textContent = cadastro.saqueMinimo;
+    function excluirPlataforma(event) {
+        const index = parseInt(event.target.dataset.index);
+        plataformas.splice(index, 1);
+        setPlataformas(plataformas);
+        atualizarTabela();
+    }
 
-    const editarButton = document.createElement("button");
-    editarButton.textContent = "Editar";
-    editarButton.onclick = () => editarCadastro(index);
-    actionsCell.appendChild(editarButton);
+    barraPesquisa.addEventListener('input', () => {
+        currentPage = 1;
+        atualizarTabela();
+    });
 
-    const excluirButton = document.createElement("button");
-    excluirButton.textContent = "Excluir";
-    excluirButton.onclick = () => excluirCadastro(index);
-    actionsCell.appendChild(excluirButton);
-  });
-}
-
-$(document).ready(function () {
-  $('#depositoMinimo').mask('000.000.000,00', { reverse: true });
-  $('#saqueMinimo').mask('000.000.000,00', { reverse: true });
-  $('#numeroAfiliados').mask('000.000.000,00', { reverse: true });
-  $('#bonus').mask('000.000.000,00', { reverse: true }); // Máscara opcional para bônus
-  $('#linkCadastro').mask('https://' + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', {
-      translation: {
-          X: { pattern: /./, recursive: true } // Aceita qualquer caractere
-      }
-  });
+    atualizarTabela();
 });
-
-
